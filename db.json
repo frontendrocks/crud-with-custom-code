@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "a title",
+      "description": "fsdf",
+      "date": "12-06-2022"
+    },
+    {
+      "title": "sfsf",
+      "description": "sfsdf",
+      "date": "5/28/2024",
+      "id": 1716878902630
+    }
+  ]
+}
