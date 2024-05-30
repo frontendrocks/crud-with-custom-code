@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import {postData} from './ApiService';
 import { BASE_URL } from './Constant';
+
 // Saving post
 export const AddPost = () => {
     // Initial Post
@@ -103,14 +104,15 @@ const ListPost = ({refreshKey}) => {
             </tr>
             </thead>
               <tbody>
-            {posts.map(res => {
+            {posts && posts.map(res => {
                 return (<tr key={res.id}>
                         <td>{res.id}</td>
                         <td>{res.title}</td>
                         <td>{res.description}</td>
                         <td>{res.date}</td> 
                 </tr> )
-            })}     
+            })}  
+            {posts.length===0 && <tr><td colSpan="4">No Post data</td></tr>}      
    </tbody>
 </table>
     </>
