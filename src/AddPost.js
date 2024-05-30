@@ -1,9 +1,8 @@
 import React, { useState,useEffect } from 'react';
 import {postData} from './ApiService';
 import { BASE_URL } from './Constant';
-import ListPost from './ListPost';
 // Saving post
-const AddPost = () => {
+export const AddPost = () => {
     // Initial Post
     const initialPost = {
         title: "",
@@ -15,7 +14,7 @@ const AddPost = () => {
     const [inputError, setInputError] = useState(false);
     const [isError, setIsError] = useState(false);
     const [success, setSuccess] = useState('');
-    const [refreshKey, setRefreshKey] = useState(0);
+    const [refreshKey, setRefreshKey] = useState(false);
 
    useEffect(()=>{
     setTimeout(() => {
@@ -38,14 +37,14 @@ const AddPost = () => {
         const newPost = { ...posts, id: Date.now() };
         postData(BASE_URL, newPost).then((res) => {
             res.status === 201 ? setSuccess(res.statusText) : setSuccess("");
-            setRefreshKey(oldKey => oldKey +1)
         if (!res.ok) {
             setIsError(true);
             return
         } 
             res.json().then(data => {
                 if (data) {
-                setPosts(initialPost);
+                    setPosts(initialPost);
+                    setRefreshKey(true);
                 e.target.reset(); 
              }
 
@@ -76,10 +75,46 @@ const AddPost = () => {
                   <button type='submit'>Save Post</button>
               </div>
           </form>
-                <ListPost refreshKey={refreshKey} />
+          <ListPost refreshKey={refreshKey} />
       </div>
       
   )
 }
 
-export default AddPost
+const ListPost = ({refreshKey}) => {
+    const [posts, setPosts] = useState([]);
+  
+    useEffect(() => {
+      fetch(BASE_URL)
+      .then(response => response.json())
+        .then(data => setPosts(data));
+  }, [refreshKey]);
+
+
+  return (
+    <>
+     <table width={"800px"} align='center'>
+            <thead>
+                <tr>
+                <th>S.R. No</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Creation Date</th>           
+            </tr>
+            </thead>
+              <tbody>
+            {posts.map(res => {
+                return (<tr key={res.id}>
+                        <td>{res.id}</td>
+                        <td>{res.title}</td>
+                        <td>{res.description}</td>
+                        <td>{res.date}</td> 
+                </tr> )
+            })}     
+   </tbody>
+</table>
+    </>
+  )
+} 
+
+

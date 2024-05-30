@@ -1,5 +1,5 @@
 import './App.css';
-import AddPost from './AddPost';
+import {AddPost} from './AddPost';
 
 
 function App() {
