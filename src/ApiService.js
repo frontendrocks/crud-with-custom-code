@@ -6,7 +6,11 @@ const postData = async (url, data) => {
     };
     const response = await fetch(url, requestOptions);
     return response;
-    
 }
 
-export default postData;
+const getPostData = async (url) => {
+    const response = await fetch(url);
+    return response
+}
+
+export  { postData, getPostData }

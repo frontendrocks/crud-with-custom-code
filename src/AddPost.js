@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
-import postData from './ApiService';
+import {postData} from './ApiService';
 import { BASE_URL } from './Constant';
-
+import ListPost from './ListPost';
 // Saving post
 const AddPost = () => {
     // Initial Post
@@ -15,6 +15,7 @@ const AddPost = () => {
     const [inputError, setInputError] = useState(false);
     const [isError, setIsError] = useState(false);
     const [success, setSuccess] = useState('');
+    const [refreshKey, setRefreshKey] = useState(0);
 
    useEffect(()=>{
     setTimeout(() => {
@@ -37,6 +38,7 @@ const AddPost = () => {
         const newPost = { ...posts, id: Date.now() };
         postData(BASE_URL, newPost).then((res) => {
             res.status === 201 ? setSuccess(res.statusText) : setSuccess("");
+            setRefreshKey(oldKey => oldKey +1)
         if (!res.ok) {
             setIsError(true);
             return
@@ -73,8 +75,10 @@ const AddPost = () => {
               <div className='form-control'>
                   <button type='submit'>Save Post</button>
               </div>
-      </form>
-    </div>
+          </form>
+                <ListPost refreshKey={refreshKey} />
+      </div>
+      
   )
 }
 
